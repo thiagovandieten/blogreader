@@ -1,8 +1,8 @@
 //
 //  TVDAppDelegate.m
-//  Blog Reader
+//  NewBlogReader
 //
-//  Created by Thiago van Dieten on 23/08/14.
+//  Created by Thiago van Dieten on 30/07/14.
 //  Copyright (c) 2014 Thiago van Dieten. All rights reserved.
 //
 
@@ -12,10 +12,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
+    
+//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//    // Override point for customization after application launch.
+//    self.window.backgroundColor = [UIColor whiteColor];
+//    [self.window makeKeyAndVisible];
     return YES;
 }
 

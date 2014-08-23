@@ -1,8 +1,8 @@
 //
 //  TVDAppDelegate.h
-//  Blog Reader
+//  NewBlogReader
 //
-//  Created by Thiago van Dieten on 23/08/14.
+//  Created by Thiago van Dieten on 30/07/14.
 //  Copyright (c) 2014 Thiago van Dieten. All rights reserved.
 //
 
