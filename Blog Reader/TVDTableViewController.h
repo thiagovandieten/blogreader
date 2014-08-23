@@ -13,4 +13,7 @@
 @property(strong, nonatomic) NSMutableArray *blogPosts;
 @property(weak, nonatomic) NSDictionary *dataDictionary;
 
+-(void) makeRequestToJSONAPIWithURL:(NSURL *)url;
+
+-(void)insertBlogPosts:(NSDictionary *)blogPosts;
 @end

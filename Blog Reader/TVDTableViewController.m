@@ -40,46 +40,7 @@
     
     NSURL *blogURL = [NSURL URLWithString:@"http://blog.teamtreehouse.com/api/get_recent_summary/"];
     
-//    NSURLRequest *blogURLRequest = [NSURLRequest requestWithURL:blogURL];
-//    
-//    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:blogURLRequest];
-//    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-//    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
-//    {
-//        self.dataDictionary = (NSDictionary *)responseObject;
-//        NSLog(@"Tijdens het ophalen: %@", self.dataDictionary);
-//        [self.tableView reloadData];
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error)
-//    {
-//        NSLog(@"Error: %@", [error localizedDescription]);
-//    }];
-//    [operation start];
-    
-    NSData *jsonData = [NSData dataWithContentsOfURL:blogURL];
-    
-    NSError *error = nil;
-    
-    NSDictionary *dataDictionary = [NSJSONSerialization JSONObjectWithData:jsonData options:0
-                                                        error:&error];
-    
-    NSLog(@"%@", dataDictionary);
-//    NSDictionary *blogPost1 = [ NSDictionary dictionaryWithObjectsAndKeys:@"Getting started with Wordpress",@"title",@"Ben Jakuben", @"author", nil];Handle Revision Requests for Web Design Projects", @"title", @"Nick Petitt", @"author", nil];
-    
-//    self.blogPosts =  [dataDictionary objectForKey:@"posts"];
-    self.blogPosts = [NSMutableArray array];
-    
-    NSArray *blogPostsArray = [dataDictionary objectForKey:@"posts"];
-//    NSLog(@"%@", blogPostsArray);
-    
-    for (NSDictionary *bpDictionary in blogPostsArray) {
-        TVDBlogPost *blogPost = [TVDBlogPost blogPostWithTitle:[bpDictionary objectForKey:@"title"]];
-        blogPost.author = [bpDictionary objectForKey:@"author"];
-        blogPost.thumbnail = [bpDictionary objectForKey:@"thumbnail"];
-        blogPost.date = [bpDictionary objectForKey:@"date"];
-        blogPost.url = [NSURL URLWithString:[bpDictionary objectForKey:@"url"]];
-        [self.blogPosts addObject:blogPost];
-    }
-    
+    [self makeRequestToJSONAPIWithURL:blogURL];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -147,6 +108,46 @@
     }
 }
 
+-(void)insertBlogPosts:(NSDictionary *)blogPosts
+{
+    self.blogPosts = [NSMutableArray array];
+    
+    NSArray *blogPostsArray = [self.dataDictionary objectForKey:@"posts"];
+    //    NSLog(@"%@", blogPostsArray);
+    
+    for (NSDictionary *bpDictionary in blogPostsArray) {
+        TVDBlogPost *blogPost = [TVDBlogPost blogPostWithTitle:[bpDictionary objectForKey:@"title"]];
+        blogPost.author = [bpDictionary objectForKey:@"author"];
+        blogPost.thumbnail = [bpDictionary objectForKey:@"thumbnail"];
+        blogPost.date = [bpDictionary objectForKey:@"date"];
+        blogPost.url = [NSURL URLWithString:[bpDictionary objectForKey:@"url"]];
+        [self.blogPosts addObject:blogPost];
+    }
+   
+}
+
+#pragma mark - JSON Request
+
+-(void) makeRequestToJSONAPIWithURL:(NSURL *)url
+{
+    NSURLRequest *blogURLRequest = [NSURLRequest requestWithURL:url];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:blogURLRequest];
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         self.dataDictionary = (NSDictionary *)responseObject;
+         NSLog(@"Tijdens het ophalen: %@", self.dataDictionary);
+         [self insertBlogPosts:self.dataDictionary];
+         [self.tableView reloadData];
+     } failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         NSLog(@"Error: %@", [error localizedDescription]);
+     }];
+    [operation start];
+}
+
+
 //-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 //{
 //    NSLog(@"Row selected %d", indexPath.row );
@@ -205,5 +206,6 @@
     // Pass the selected object to the new view controller.
 }
 */
+
 
 @end
